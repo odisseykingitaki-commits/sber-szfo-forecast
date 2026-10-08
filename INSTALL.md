@@ -1,4 +1,4 @@
-# Установка и воспроизведение (Task 2)
+# Установка и воспроизведение (Задача 2)
 
 ## 1. Окружение
 
@@ -15,10 +15,10 @@ pip install -r requirements.txt
 | Путь | Назначение |
 |------|------------|
 | `results/labels_threshold.npy` | метки Тип A/B (140/140) |
-| `results/dynamic_summary.json` | скользящие окна PLM → спектральные фичи |
-| `data/processed/google_trends_szfo.csv` | Trends (прокси) |
-| `results/forecast_all_models.csv` | **канон MAE** (post-leakage) |
-| `results/changepoints_consensus.csv` | консенсус сдвигов |
+| `results/dynamic_summary.json` | скользящие окна PLM → спектральные признаки |
+| `data/processed/google_trends_szfo.csv` | Google Trends (прокси) |
+| `results/forecast_all_models.csv` | **канон MAE** (после фикса утечки) |
+| `results/changepoints_consensus.csv` | консенсус дат структурных сдвигов |
 
 Для полного пересчёта прогноза нужен `data/intermediate/spend.parquet` (сырые расходы конкурса; крупный raw в `.gitignore`).
 
@@ -33,13 +33,13 @@ python src/13_changepoints.py
 Опционально:
 
 ```bash
-python scripts/run_chronos_task2.py          # foundation MAE
+python scripts/run_chronos_task2.py          # foundation MAE (Chronos)
 python scripts/run_gdelt_news_forecast.py    # GDELT ± Trends
 ```
 
-Критическое правило: спектральные фичи только при **`end_dt < ds`**.
+Критическое правило анти-утечки: спектральные признаки месяца `ds` берутся только из окон, полностью завершённых раньше этой даты (`end_dt < ds`).
 
-## 4. Пересборка PDF (не нужно жюри)
+## 4. Пересборка PDF
 
 ```bash
 pip install reportlab pillow pyyaml

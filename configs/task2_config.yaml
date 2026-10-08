@@ -57,6 +57,6 @@ trends:
   limitation: "Same regional average applied to rural and urban aggregates."
 
 notes:
-  - "Task 2 is self-contained for jury; Type A/B defined from spend features (PLM→U1→median). Optional detail: TASK1_METHOD_REPORT.md."
+  - "Type A/B from spend features: PLM → main-mode projection U1 → median split (140/140)."
   - "Foundation TS: Chronos-bolt-tiny zero-shot run — see docs/TASK2_GAPS.md / forecast_foundation.csv."
   - "News not used; Trends is an external-signal proxy only."

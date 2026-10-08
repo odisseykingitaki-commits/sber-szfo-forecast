@@ -37,7 +37,7 @@ leakage:
   spectral_mask: "spectral['end_dt'] < row['ds']"
   take: last completed window before ds
 
-spectral_from_task1:
+spectral_windows:
   C_reg: 0.2
   window_size_months: 6
   step_months: 1

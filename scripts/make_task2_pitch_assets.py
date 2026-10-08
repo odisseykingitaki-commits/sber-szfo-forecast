@@ -4,7 +4,7 @@ Run from repo root:
     python scripts/make_task2_pitch_assets.py
 
 All numbers from results/* — no invented data.
-Colors: navy + teal + orange (same as Task 1).
+Colors: navy + teal + orange.
 """
 from __future__ import annotations
 
@@ -160,7 +160,7 @@ def slide02_bakeoff(d):
             fontweight="bold", color=C_TEAL)
     ax.text(
         0.26, 0.38,
-        "naive · seasonal · mean\nProphet · LGBM · CatBoost\n± Trends · Chronos\n→ MAE по H×типу",
+        "naive · seasonal · mean\nProphet · LightGBM · CatBoost\n± Trends · Chronos\n→ MAE по горизонту × типу",
         ha="center", va="center", fontsize=12, color=C_INK, linespacing=1.45,
     )
 
@@ -169,7 +169,7 @@ def slide02_bakeoff(d):
             fontweight="bold", color=C_ORANGE)
     ax.text(
         0.74, 0.38,
-        "сигнал [λ₁…λ₅, PR₊]\n9 методов ruptures\nконсенсус ≥ 50%\n→ даты сдвигов",
+        "спектр структуры трат\n9 методов ruptures\nконсенсус ≥ 50%\n→ даты сдвигов",
         ha="center", va="center", fontsize=12, color=C_INK, linespacing=1.45,
     )
 
@@ -188,13 +188,13 @@ def slide03_leakage(d):
         return float(fc[(fc.cluster == cl) & (fc.horizon == h)][col].iloc[0])
 
     pairs = [
-        ("Городские H=3\nLGBM + Trends",
+        ("Городские, 3 мес.\nLightGBM + Trends",
          OLD_MAE[(1, 3, "lgbm_trends")], _new(1, 3, "MAE_lgbm_trends"),
          "утечка завышала выгоду Trends"),
-        ("Сельские H=3\nProphet",
+        ("Сельские, 3 мес.\nProphet",
          OLD_MAE[(0, 3, "prophet")], _new(0, 3, "MAE_prophet"),
          "катастрофа Prophet исправлена"),
-        ("Городские H=3\nProphet",
+        ("Городские, 3 мес.\nProphet",
          OLD_MAE[(1, 3, "prophet")], _new(1, 3, "MAE_prophet"),
          "катастрофа Prophet исправлена"),
     ]
@@ -211,13 +211,13 @@ def slide03_leakage(d):
     _card(ax_top, 0.04, 0.12, 0.42, 0.76, ec=C_ORANGE, lw=2)
     ax_top.text(0.25, 0.68, "БЫЛО", ha="center", fontsize=13,
                 fontweight="bold", color=C_ORANGE)
-    ax_top.text(0.25, 0.38, "start_dt ≤ ds\nокна «видели» будущее",
+    ax_top.text(0.25, 0.38, "окно могло включать\nтекущий месяц",
                 ha="center", va="center", fontsize=12, color=C_INK, linespacing=1.4)
 
     _card(ax_top, 0.54, 0.12, 0.42, 0.76, ec=C_TEAL, lw=2)
     ax_top.text(0.75, 0.68, "СТАЛО", ha="center", fontsize=13,
                 fontweight="bold", color=C_TEAL)
-    ax_top.text(0.75, 0.38, "end_dt < ds\nокно закончилось до ds",
+    ax_top.text(0.75, 0.38, "только завершённые\nокна в прошлом",
                 ha="center", va="center", fontsize=12, color=C_INK, linespacing=1.4)
     ax_top.annotate("", xy=(0.52, 0.50), xytext=(0.48, 0.50),
                     arrowprops=dict(arrowstyle="->", color=C_NAVY, lw=2.5))
@@ -294,7 +294,7 @@ def slide04_mae_grid(d):
         fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04, label="MAE")
 
     fig.suptitle(
-        "MAE после end_dt < ds — универсального победителя нет",
+        "MAE после фикса утечки — универсального победителя нет",
         color=C_NAVY, fontsize=14, fontweight="bold", y=1.02,
     )
     fig.tight_layout()
@@ -338,7 +338,7 @@ def slide05_winners(d):
     _card(ax, 0.80, 0.28, 0.18, 0.54, ec=C_ORANGE, fc="#f8efe9", lw=2)
     ax.text(
         0.89, 0.55,
-        "Prophet\nчасто\nгородские;\nLGBM —\nсельские\nH=3",
+        "Prophet\nчасто\nгородские;\nLightGBM —\nсельские\n3 мес.",
         ha="center", va="center", fontsize=11,
         fontweight="bold", color=C_ORANGE, linespacing=1.4,
     )
@@ -362,7 +362,7 @@ def slide06_rural_case(d):
     ax2 = fig.add_subplot(gs[1])
 
     models = ["naive", "prophet", "lgbm"]
-    labels = ["Naive", "Prophet", "LGBM"]
+    labels = ["Naive", "Prophet", "LightGBM"]
     vals_a = [float(row_a[f"MAE_{m}"]) for m in models]
     vals_b = [float(row_b[f"MAE_{m}"]) for m in models]
     x = np.arange(len(labels))
@@ -390,7 +390,7 @@ def slide06_rural_case(d):
              fontsize=12, fontweight="bold", color=C_TEAL)
     ax2.text(
         0.50, 0.68,
-        f"LGBM {vals_a[2]:.0f}  <  Prophet {vals_a[1]:.0f}",
+        f"LightGBM {vals_a[2]:.0f}  <  Prophet {vals_a[1]:.0f}",
         ha="center", va="center", fontsize=13, color=C_INK, fontweight="bold",
     )
 
@@ -399,7 +399,7 @@ def slide06_rural_case(d):
              ha="center", fontsize=12, fontweight="bold", color=C_ORANGE)
     ax2.text(
         0.50, 0.22,
-        f"Prophet {vals_b[1]:.0f}  <<  LGBM {vals_b[2]:.0f}",
+        f"Prophet {vals_b[1]:.0f}  <<  LightGBM {vals_b[2]:.0f}",
         ha="center", va="center", fontsize=13, color=C_INK, fontweight="bold",
     )
     return _save(fig, "slide06_rural_case.png")
@@ -496,7 +496,7 @@ def slide08_external(d):
     )
 
     _card(ax, 0.52, 0.42, 0.44, 0.48, ec=C_MUTED, lw=2.5)
-    ax.text(0.74, 0.82, "GDELT (Russia-wide)", ha="center",
+    ax.text(0.74, 0.82, "GDELT — база событий", ha="center",
             fontsize=14, fontweight="bold", color=C_MUTED)
     ax.text(
         0.74, 0.62,
@@ -505,7 +505,7 @@ def slide08_external(d):
     )
     ax.text(
         0.74, 0.48,
-        f"заметная клетка: городские H=1\nΔ ≈ {delta_u1:.0f} ({pct:.1f}%)",
+        f"заметная клетка: городские 1 мес.\nΔ ≈ {delta_u1:.0f} ({pct:.1f}%)",
         ha="center", fontsize=11, color=C_MUTED, linespacing=1.3,
     )
 
@@ -592,9 +592,9 @@ def slide10_value(d):
         (0.05, C_TEAL, "Мониторинг сдвигов",
          "три консенсусные даты\nсильная — 2024-09 (7/9)"),
         (0.35, C_NAVY, "Выбор прогноза",
-         "не одна модель:\nProphet / LGBM / naive\nпо типу и горизонту"),
+         "не одна модель:\nProphet / LightGBM / naive\nпо типу и горизонту"),
         (0.65, C_ORANGE, "Честная оценка",
-         "end_dt < ds\nбез магических фич\nиз будущего"),
+         "только прошлые окна\nбез признаков\nиз будущего"),
     ]
     for x, col, title, body in cards:
         _card(ax, x, 0.22, 0.28, 0.58, ec=col, lw=2.5)
@@ -633,9 +633,9 @@ def slide11_finale(d):
     )
 
     bullets = [
-        f"MAE-победители: Prophet {n_prophet}/8 · LGBM {n_lgbm}/8 · остальные — baselines",
-        "Chronos: 0/8  ·  GDELT: без систематического win",
-        "Changepoints ≥50%: 2023-11 · 2024-04 · 2024-09 (7/9)",
+        f"MAE-победители: Prophet {n_prophet}/8 · LightGBM {n_lgbm}/8 · остальные — baselines",
+        "Chronos: 0/8  ·  GDELT (события): без систематического выигрыша",
+        "Сдвиги ≥50%: 2023-11 · 2024-04 · 2024-09 (7/9)",
         "Воспроизводимо: configs/ + src/12_ + src/13_ + results/",
     ]
     for i, t in enumerate(bullets):
