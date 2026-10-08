@@ -1,0 +1,31 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Raw inputs (place locally; see INSTALL.md)
+data/raw/*
+!data/raw/.gitkeep
+
+data/intermediate/*.parquet
+
+# Large arrays: regenerate via run_all / scripts 05–11
+*.npy
+!results/labels_threshold.npy
+!results/labels_louvain.npy
+
+catboost_info/
+run_log.txt
+.DS_Store
+*.log
+.conda/
+
+results/_backup*/
+results/_bak*/
+
+# local visual QA renders of slides
+scripts/_pitch/presentation_assets/_qa/
+
+# non-jury leftovers
+_archive/
+data/raw/*.zip
+data/raw/*.xlsx
